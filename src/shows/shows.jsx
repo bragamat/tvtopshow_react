@@ -3,37 +3,38 @@ import Axios from 'axios'
 
 export default class Shows extends Component {
     state = {
-        shows: []
+        shows: [],
+        search: '' || 'all',
     }
 
-    componentWillMount(){
+    componentDidMount(){
         Axios
-            .get('http://api.tvmaze.com/search/shows?q=latest')
+            .get(`http://api.tvmaze.com/search/shows?q=${this.state.search}`)
             .then(response => {
                 this.setState({ 
-                    ...this.state,
-                    shows: response.data})
+                    shows: response.data
+                }, () => console.log(response.data))
             })
             .catch(response => console.log(response))
     }
 
     handleDivs = (shows) => {
-        // console.log(shows)
     let arr = []
-    let description = ''
         shows.map((tv, index) => {
-            console.log(tv)
+            if(!tv.show.image){
+                tv.show.image = '...'
+            }
             arr.push(
-            <div className="card" key={index} style={{'width': '100%'}}>
-                <div className="image" style={{'height': '10rem'}}>
-                    <img className="card-img-top" src={tv.show.image.medium} alt=""/>
+                <div className="card" key={index}>
+                    <img className="card-img-top" src={tv.show.image.medium} alt="Image unavailable!"/>
+                    <div className="card-body">
+                        <h5 className="card-title">{tv.show.name}</h5>
+                        <p className="card-text"></p>
+                    </div>
+                    <div className="card-footer">
+                        <small className="text-muted">status: {tv.show.status}</small>
+                    </div>
                 </div>
-                <div className="card-body">
-                    <h5 className="card-title">{tv.show.summary}</h5>
-                    <p className="card-text"></p>
-                    <a href="#a" className="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
             )
         })
        return (arr)
@@ -43,14 +44,44 @@ export default class Shows extends Component {
            return this.handleDivs(value)
         }
         else {
-            return null
+            return (
+                <div>
+                    <h1>Ops... looks like we are facing technical issuesssss!</h1>
+                </div>
+            )
+        }
+    }
+
+    handleChange = (word) => {
+        console.log(word)
+        if(word && word !== "'"){
+            this.setState({
+                search: word
+            }, () =>  {
+                Axios
+                    .get(`http://api.tvmaze.com/search/shows?q=${this.state.search}`)
+                    .then(response => {
+                        this.setState({ 
+                            shows: response.data
+                        }, ()=> console.log(response.data))
+                    })
+                    .catch(response => console.log(response))} )
         }
     }
     render(){
        
         return(
-            <div className="card-group">
-            {this.If(this.state.shows)}
+            <div className="col-md-12">
+            <div className="row">
+                <div className="col">
+                    <input type="text" placeholder="What are you looking for ?" className="form-control float-left" onChange={(e) => {return this.handleChange(e.target.value)}}/>
+                </div>
+            </div>
+                <div className="">
+                    <div className="card-group">
+                        {this.If(this.state.shows)}
+                    </div>
+                </div>
             </div>
         )
     }
