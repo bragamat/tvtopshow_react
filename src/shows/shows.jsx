@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
+import Show from './show'
 
 export default class Shows extends Component {
     state = {
@@ -13,7 +14,7 @@ export default class Shows extends Component {
             .then(response => {
                 this.setState({ 
                     shows: response.data
-                }, () => console.log(response.data))
+                })
             })
             .catch(response => console.log(response))
     }
@@ -28,22 +29,25 @@ export default class Shows extends Component {
             }
             arr.push(
                 <div className="card" key={index}>
-                    <img className="card-img-top" src={tv.show.image.medium} alt="Image unavailable!"/>
+                    <img className="card-img-top" src={tv.show.image.medium} alt="unavailable! (yet)"/>
                     <div className="card-body">
                         <h5 className="card-title">{tv.show.name}</h5>
-                        <p className="card-text"></p>
-                        <div>
-                            <a target="_blank" href={tv.show.url} className="btn btn-primary">Check it out!</a>
+                        {/* <p className="card-text">{tv.show.summary}</p> */}
+                    </div>
+                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Check it out!</button>
+                        <div className="card-footer">
+                            <small className="text-muted" style={{'textOverflow': 'hidden'}}>status: {tv.show.status}</small>
                         </div>
-                    </div>
-                    <div className="card-footer">
-                        <small className="text-muted">status: {tv.show.status}</small>
-                    </div>
                 </div>
             )
         })
        return (arr)
     }
+
+    renderBigDiv = (id) => {
+        <Show params_id={id}/>
+    }
+
     If = (value) => {
         if(value) {
            return this.handleDivs(value)
@@ -58,7 +62,6 @@ export default class Shows extends Component {
     }
 
     handleChange = (word) => {
-        console.log(word)
         if(word && word !== "'"){
             this.setState({
                 search: word
@@ -68,7 +71,7 @@ export default class Shows extends Component {
                     .then(response => {
                         this.setState({ 
                             shows: response.data
-                        }, ()=> console.log(response.data))
+                        })
                     })
                     .catch(response => console.log(response))} )
         }
@@ -82,11 +85,12 @@ export default class Shows extends Component {
                     <input type="text" placeholder="What are you looking for ?" className="form-control float-left" onChange={(e) => {return this.handleChange(e.target.value)}}/>
                 </div>
             </div>
-                <div className="">
+                <div width="100%">
                     <div className="card-group">
                         {this.If(this.state.shows)}
                     </div>
                 </div>
+                <Show />
             </div>
         )
     }
