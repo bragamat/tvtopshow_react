@@ -23,6 +23,8 @@ export default class Shows extends Component {
         shows.map((tv, index) => {
             if(!tv.show.image){
                 tv.show.image = '...'
+            }else if(index > 5){
+                arr.push(<br key={index+25}/>)
             }
             arr.push(
                 <div className="card" key={index}>
@@ -30,6 +32,9 @@ export default class Shows extends Component {
                     <div className="card-body">
                         <h5 className="card-title">{tv.show.name}</h5>
                         <p className="card-text"></p>
+                        <div>
+                            <a target="_blank" href={tv.show.url} className="btn btn-primary">Check it out!</a>
+                        </div>
                     </div>
                     <div className="card-footer">
                         <small className="text-muted">status: {tv.show.status}</small>
