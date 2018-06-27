@@ -21,7 +21,6 @@ export default class Shows extends Component {
 
     handleDivs = (shows) => {
     let arr = []
-    console.log(shows)
         shows.map((tv, index) => {
             if(!tv.show.image){
                 tv.show.image = '...'
@@ -30,7 +29,7 @@ export default class Shows extends Component {
             }
             arr.push(
                 <div className="card" key={index}>
-                    <img className="card-img-top" src={tv.show.image.medium} alt="unavailable! (yet)"/>
+                    <img className="card-img-top" src={tv.show.image.medium} alt="Unavailable! (yet)"/>
                     <div className="card-body">
                         <h5 className="card-title">{tv.show.name}</h5>
                         {/* <p className="card-text">{tv.show.summary}</p> */}
