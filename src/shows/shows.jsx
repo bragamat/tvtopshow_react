@@ -21,6 +21,7 @@ export default class Shows extends Component {
 
     handleDivs = (shows) => {
     let arr = []
+    console.log(shows)
         shows.map((tv, index) => {
             if(!tv.show.image){
                 tv.show.image = '...'
@@ -34,10 +35,11 @@ export default class Shows extends Component {
                         <h5 className="card-title">{tv.show.name}</h5>
                         {/* <p className="card-text">{tv.show.summary}</p> */}
                     </div>
-                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Check it out!</button>
+                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target={`#showModal_${tv.show.id}`}>Check it out!</button>
                         <div className="card-footer">
                             <small className="text-muted" style={{'textOverflow': 'hidden'}}>status: {tv.show.status}</small>
                         </div>
+                    <Show  content_id={tv.show.id} img={tv.show.image.medium} summary={tv.show.summary} title={tv.show.name} url={tv.show.url}/>
                 </div>
             )
         })

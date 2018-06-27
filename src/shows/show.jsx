@@ -3,17 +3,9 @@ import Axios from 'axios'
 
 export default class Show extends Component {
     
-    componentDidMount(){
-        Axios
-            .get(`http://api.tvmaze.com/shows/${this.props.params_id}`)
-            .then(response => {console.log(response.data)})
-            .catch(response => console.log(response))
-        console.log('chamado')
-    }
-    
     render(){
         return(
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id={`showModal_${this.props.content_id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -24,12 +16,13 @@ export default class Show extends Component {
                     </div>
                     <div class="modal-body">
                         <div className="row">
-
+                            <img src={this.props.img} alt="" className="col"/>
+                            <label className="label" className="col">{this.props.summary}</label>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <a href={`${this.props.url}`} target="_blank" data-dismiss="modal"  class="btn btn-primary" onClick={(e)=> {window.open(this.props.url)}}>Go to tvMaze!</a>
                     </div>
                     </div>
                 </div>
